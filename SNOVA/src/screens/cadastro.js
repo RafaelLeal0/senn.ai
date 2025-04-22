@@ -1,24 +1,96 @@
-import React from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, SafeAreaView } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { Ionicons } from '@expo/vector-icons'; // Ícone de seta
 
-export default function Cadastro({ navigation }) {
+export default function Cadastro() {
+  const navigation = useNavigation();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleCadastro = () => {
+    // Lógica de cadastro
+    navigation.replace('Login'); // Redireciona para a tela de login após o cadastro
+  };
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Tela de Cadastro</Text>
-      <Button title="Voltar para Login" onPress={() => navigation.goBack()} />
-    </View>
+    <SafeAreaView style={styles.safeArea}>
+      <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+        <Ionicons name="arrow-back" size={24} color="black" />
+      </TouchableOpacity>
+
+      <View style={styles.container}>
+        <Text style={styles.subtitle}>Faça seu cadastro</Text>
+
+        <Text style={styles.label}>Email</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Digite seu email"
+          value={email}
+          onChangeText={setEmail}
+          keyboardType="email-address"
+          autoCapitalize="none"
+          placeholderTextColor="#aaa"
+        />
+
+        <Text style={styles.label}>Senha</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Digite sua senha"
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry
+          placeholderTextColor="#aaa"
+        />
+      </View>
+
+      <TouchableOpacity style={styles.button} onPress={handleCadastro}>
+        <Text style={styles.buttonText}>Cadastrar</Text>
+      </TouchableOpacity>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  safeArea: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: '#fff',
   },
-  text: {
-    fontSize: 18,
-    marginBottom: 20,
+  backButton: {
+    padding: 15,
+  },
+  container: {
+    flex: 1,
+    paddingHorizontal: 30,
+    alignItems: 'center',
+  },
+  subtitle: {
+    fontSize: 14,
+    color: '#555',
+    marginBottom: 30,
+  },
+  label: {
+    alignSelf: 'flex-start',
+    color: '#333',
+    marginTop: 15,
+  },
+  input: {
+    width: '100%',
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
+    paddingVertical: 8,
+    fontSize: 16,
+    color: '#000',
+  },
+  button: {
+    backgroundColor: '#000',
+    paddingVertical: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
   },
 });

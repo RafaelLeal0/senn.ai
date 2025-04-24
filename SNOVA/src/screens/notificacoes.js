@@ -51,7 +51,7 @@ export default function NotificacoesScreen() {
 
       {/* Barra de navegação */}
       <View style={styles.bottomBar}>
-        <TouchableOpacity onPress={() => navigation.navigate('Feed')}>
+        <TouchableOpacity onPress={() => navigation.navigate('PaginaPrincipal')}>
           <Icon name="home-outline" size={30} color="#fff" />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('Perfil')}>

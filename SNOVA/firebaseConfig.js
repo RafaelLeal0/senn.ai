@@ -1,17 +1,19 @@
+// src/firebaseConfig.js
 import { initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
-import { getDatabase } from 'firebase/database';
+import { getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
-  apiKey: "SUA_API_KEY", // Substitua por sua chave de API
-  authDomain: "SEU_AUTH_DOMAIN", // Substitua pelo domínio de autenticação
-  databaseURL: "SEU_DATABASE_URL", // Substitua pela URL do banco de dados
-  projectId: "SEU_PROJECT_ID", // Substitua pelo ID do projeto
-  storageBucket: "SEU_STORAGE_BUCKET", // Substitua pelo bucket de armazenamento
-  messagingSenderId: "SEU_MESSAGING_SENDER_ID", // Substitua pelo ID do remetente
-  appId: "SEU_APP_ID" // Substitua pelo ID do aplicativo
+  apiKey: "AIzaSyBnHdoeuNO4JJGSIkwcmk3tZrt62b-Dv1A",
+  authDomain: "auth-firebase-projeto-au-a0e9d.firebaseapp.com",
+  databaseURL: "https://auth-firebase-projeto-au-a0e9d-default-rtdb.firebaseio.com",
+  projectId: "auth-firebase-projeto-au-a0e9d",
+  storageBucket: "auth-firebase-projeto-au-a0e9d.firebasestorage.app",
+  messagingSenderId: "643403882486",
+  appId: "1:643403882486:web:02d76ad8d7b5bdb29c31d7",
+  measurementId: "G-0WVH2T7W1T"
 };
 
 const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app);
-export const database = getDatabase(app);
+const db = getFirestore(app);
+
+export { db };

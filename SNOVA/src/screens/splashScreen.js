@@ -15,7 +15,7 @@ export default function SplashScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Bem-vindo ao App</Text>
+      <Text style={styles.text}>Bem-vindo ao SNOVA</Text>
       <ActivityIndicator size="large" color="#000" />
     </View>
   );

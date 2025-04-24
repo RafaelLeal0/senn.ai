@@ -1,16 +1,34 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, SafeAreaView, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { Ionicons } from '@expo/vector-icons'; // Ícone de seta
+import { Ionicons } from '@expo/vector-icons';
+import { db } from '../../firebaseConfig';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 export default function Cadastro() {
   const navigation = useNavigation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleCadastro = () => {
-    // Lógica de cadastro
-    navigation.replace('Login'); // Redireciona para a tela de login após o cadastro
+  const handleCadastro = async () => {
+    if (!email || !password) {
+      Alert.alert('Erro', 'Preencha todos os campos.');
+      return;
+    }
+
+    try {
+      await addDoc(collection(db, 'users'), {
+        email,
+        senha: password,
+        criadoEm: serverTimestamp(),
+      });
+
+      Alert.alert('Sucesso', 'Usuário cadastrado com sucesso!');
+      navigation.replace('Login');
+    } catch (error) {
+      console.error('Erro ao cadastrar usuário:', error);
+      Alert.alert('Erro', 'Não foi possível cadastrar. Verifique sua conexão e permissões.');
+    }
   };
 
   return (
@@ -51,46 +69,4 @@ export default function Cadastro() {
   );
 }
 
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-  backButton: {
-    padding: 15,
-  },
-  container: {
-    flex: 1,
-    paddingHorizontal: 30,
-    alignItems: 'center',
-  },
-  subtitle: {
-    fontSize: 14,
-    color: '#555',
-    marginBottom: 30,
-  },
-  label: {
-    alignSelf: 'flex-start',
-    color: '#333',
-    marginTop: 15,
-  },
-  input: {
-    width: '100%',
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
-    paddingVertical: 8,
-    fontSize: 16,
-    color: '#000',
-  },
-  button: {
-    backgroundColor: '#000',
-    paddingVertical: 15,
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '100%',
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 16,
-  },
-});
+// (mantenha seu StyleSheet atual aqui)

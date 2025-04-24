@@ -51,6 +51,22 @@ export default function FeedScreen() {
     setNewPostText('');
   };
 
+  const toggleReaction = (postId, reactionType) => {
+    setPostList((prevPosts) =>
+      prevPosts.map((post) => {
+        if (post.id === postId) {
+          const isActive = post[`${reactionType}Active`];
+          return {
+            ...post,
+            [`${reactionType}Active`]: !isActive,
+            [reactionType]: isActive ? post[reactionType] - 1 : post[reactionType] + 1,
+          };
+        }
+        return post;
+      })
+    );
+  };
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
@@ -90,9 +106,39 @@ export default function FeedScreen() {
               <Text style={styles.postText}>{item.text}</Text>
             
               <View style={styles.reactions}>
-                <Text>💬 {item.comments}</Text>
-                <Text>🔁 {item.shares}</Text>
-                <Text>❤️ {item.likes}</Text>
+                <TouchableOpacity
+                  style={{ flexDirection: 'row', alignItems: 'center', gap: 5 }}
+                  onPress={() => toggleReaction(item.id, 'comments')}
+                >
+                  <Icon
+                    name="chatbubble-outline"
+                    size={20}
+                    color="#fff"
+                  />
+                  <Text style={{ color: '#fff' }}>{item.comments}</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={{ flexDirection: 'row', alignItems: 'center', gap: 5 }}
+                  onPress={() => toggleReaction(item.id, 'shares')}
+                >
+                  <Icon
+                    name="repeat-outline"
+                    size={20}
+                    color="#fff"
+                  />
+                  <Text style={{ color: '#fff' }}>{item.shares}</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={{ flexDirection: 'row', alignItems: 'center', gap: 5 }}
+                  onPress={() => toggleReaction(item.id, 'likes')}
+                >
+                  <Icon
+                    name="heart-outline"
+                    size={20}
+                    color={item.likesActive ? 'red' : '#fff'}
+                  />
+                  <Text style={{ color: '#fff' }}>{item.likes}</Text>
+                </TouchableOpacity>
               </View>
             </View>
           )}
@@ -101,7 +147,7 @@ export default function FeedScreen() {
 
       {/* Barra de navegação */}
       <View style={styles.bottomBar}>
-        <TouchableOpacity onPress={() => navigation.navigate('Feed')}>
+        <TouchableOpacity onPress={() => navigation.navigate('PaginaPrincipal')}>
           <Icon name="home-outline" size={30} color="#fff" />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('Perfil')}>

@@ -10,6 +10,7 @@ import Notificacoes from './src/screens/notificacoes';
 import Mensagens from './src/screens/mensagens';
 import Perfil from './src/screens/perfil';
 
+
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -24,6 +25,7 @@ export default function App() {
           <Stack.Screen name="Notificacoes" component={Notificacoes} options={{ headerShown: false }} />
           <Stack.Screen name="Mensagens" component={Mensagens} options={{ headerShown: false }} />
           <Stack.Screen name="Perfil" component={Perfil} options={{ headerShown: false }} />
+      
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaView>

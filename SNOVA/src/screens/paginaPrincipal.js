@@ -1,3 +1,4 @@
+//Gustavo Martins e Rafael Leal
 import React, { useState } from 'react';
 import {
   View,
@@ -51,7 +52,7 @@ export default function FeedScreen() {
     if (newPostText.trim() === '') return;
 
     const newPost = {
-      id: Date.now().toString(), // ID único baseado no timestamp
+      id: Date.now().toString(), 
       user: 'Você',
       username: '@voce',
       time: 'Agora',
@@ -114,7 +115,6 @@ export default function FeedScreen() {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
-        {/* Topo */}
         <View style={styles.topBar}>
           <Image source={require('../../src/assets/logo.jpg')} style={styles.logoImage} />
           <View style={styles.tabs}>
@@ -122,7 +122,6 @@ export default function FeedScreen() {
           </View>
         </View>
 
-        {/* Campo de post */}
         <View style={styles.postBox}>
           <Icon name="person-circle-outline" size={40} color="#fff" />
           <TextInput
@@ -137,7 +136,7 @@ export default function FeedScreen() {
           </TouchableOpacity>
         </View>
 
-        {/* Feed */}
+
         <FlatList
           data={postList}
           keyExtractor={(item) => item.id}
@@ -278,7 +277,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   postButton: {
-    backgroundColor: '#bbb', // Consistência com o botão de postar na tela de perfil
+    backgroundColor: '#bbb', 
     paddingHorizontal: 10,
     paddingVertical: 6,
     borderRadius: 10,
@@ -343,18 +342,18 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   saveButton: {
-    backgroundColor: '#bbb', // Consistência com o botão de salvar na tela de perfil
+    backgroundColor: '#bbb', 
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 10,
     marginBottom: 10,
   },
   saveButtonText: {
-    color: '#000', // Texto preto para contraste
+    color: '#000', 
     fontSize: 16,
   },
   cancelButton: {
-    backgroundColor: '#dc3545', // Consistência com o botão de cancelar na tela de perfil
+    backgroundColor: '#dc3545', 
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 10,

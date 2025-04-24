@@ -1,3 +1,4 @@
+//Gustavo Martins e Rafael Leal
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, TextInput, Alert, Modal, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';

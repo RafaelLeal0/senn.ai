@@ -1,8 +1,9 @@
+//Gustavo Martins e Rafael Leal
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, SafeAreaView, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { db } from '../../firebaseConfig';  // Certifique-se de que o Firebase está configurado corretamente
-import { query, where, getDocs, collection } from 'firebase/firestore';  // Importando funções do Firestore
+import { db } from '../../firebaseConfig';
+import { query, where, getDocs, collection } from 'firebase/firestore';
 
 export default function Login() {
   const navigation = useNavigation();
@@ -16,17 +17,13 @@ export default function Login() {
     }
 
     try {
-      // Consultar o Firestore para verificar se o email e a senha existem
-      const usersRef = collection(db, 'users');  // Referência para a coleção "users"
-      const q = query(usersRef, where('email', '==', email), where('senha', '==', password));  // Consulta com filtros para email e senha
-
-      const querySnapshot = await getDocs(q);  // Executa a consulta
+      const usersRef = collection(db, 'users');
+      const q = query(usersRef, where('email', '==', email), where('senha', '==', password));
+      const querySnapshot = await getDocs(q);
 
       if (querySnapshot.empty) {
-        // Se não encontrar usuário com esse email e senha
         alert('Erro, Email ou senha inválidos.');
       } else {
-        // Se encontrar, redireciona para a página principal
         navigation.replace('PaginaPrincipal');
       }
     } catch (error) {
@@ -42,9 +39,7 @@ export default function Login() {
           source={require('../../src/assets/logo.jpg')} 
           style={styles.logo}
         />
-
         <Text style={styles.subtitle}>Faça login para continuar</Text>
-
         <Text style={styles.label}>Email</Text>
         <TextInput
           style={styles.input}
@@ -55,7 +50,6 @@ export default function Login() {
           autoCapitalize="none"
           placeholderTextColor="#aaa"
         />
-
         <Text style={styles.label}>Senha</Text>
         <TextInput
           style={styles.input}
@@ -65,11 +59,9 @@ export default function Login() {
           secureTextEntry
           placeholderTextColor="#aaa"
         />
-
         <TouchableOpacity style={styles.button} onPress={handleLogin}>
           <Text style={styles.buttonText}>Entrar</Text>
         </TouchableOpacity>
-
         <TouchableOpacity onPress={() => navigation.navigate('Cadastro')}>
           <Text style={styles.registerText}>Não tem uma conta? Cadastre-se</Text>
         </TouchableOpacity>

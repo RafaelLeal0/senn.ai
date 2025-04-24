@@ -1,5 +1,6 @@
+//Gustavo Martins e Rafael Leal
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, SafeAreaView } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, SafeAreaView, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 
@@ -34,7 +35,7 @@ export default function MensagensScreen() {
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
         <View style={styles.topBar}>
-          <Text style={styles.logo}>SN</Text>
+          <Image source={require('../../src/assets/logo.jpg')} style={styles.logoImage} />
           <View style={styles.tabs}>
             <Text style={[styles.tabText, styles.activeTab]}>Mensagens</Text>
           </View>
@@ -76,10 +77,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 10,
   },
-  logo: {
-    fontSize: 24,
-    color: '#fff',
-    fontWeight: 'bold',
+  logoImage: {
+    width: 50,
+    height: 50,
+    resizeMode: 'contain',
   },
   tabs: {
     flexDirection: 'row',

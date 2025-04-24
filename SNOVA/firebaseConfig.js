@@ -1,4 +1,4 @@
-// src/firebaseConfig.js
+//Gustavo Martins e Rafael Leal
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 

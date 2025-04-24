@@ -1,3 +1,4 @@
+//Gustavo Martins e Rafael Leal
 import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -7,10 +8,10 @@ export default function SplashScreen() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      navigation.replace('Cadastro'); // Certifique-se de que "Cadastro" está correto
-    }, 3500); // Tempo de exibição da SplashScreen (2 segundos)
+      navigation.replace('Cadastro'); 
+    }, 3500); 
 
-    return () => clearTimeout(timer); // Limpa o timer ao desmontar o componente
+    return () => clearTimeout(timer); 
   }, [navigation]);
 
   return (

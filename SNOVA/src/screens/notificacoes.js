@@ -1,5 +1,6 @@
+//Gustavo Martins e Rafael Leal
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, SafeAreaView } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, SafeAreaView, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 
@@ -34,7 +35,7 @@ export default function NotificacoesScreen() {
       <View style={styles.container}>
         {/* Topo */}
         <View style={styles.topBar}>
-          <Text style={styles.logo}>SN</Text>
+          <Image source={require('../../src/assets/logo.jpg')} style={styles.logoImage} />
           <View style={styles.tabs}>
             <Text style={[styles.tabText, styles.activeTab]}>Notificações</Text>
           </View>
@@ -49,7 +50,6 @@ export default function NotificacoesScreen() {
         />
       </View>
 
-      {/* Barra de navegação */}
       <View style={styles.bottomBar}>
         <TouchableOpacity onPress={() => navigation.navigate('PaginaPrincipal')}>
           <Icon name="home-outline" size={30} color="#fff" />
@@ -138,5 +138,10 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderTopWidth: 0.5,
     borderColor: '#333',
+  },
+  logoImage: {
+    width: 50,
+    height: 50,
+    resizeMode: 'contain',
   },
 });

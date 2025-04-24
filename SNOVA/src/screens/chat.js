@@ -1,3 +1,4 @@
+//Gustavo Martins e Rafael Leal
 import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, FlatList, TouchableOpacity, SafeAreaView } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons'; 
@@ -78,7 +79,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 10,
     textAlign: 'center',
-    marginTop: 40, // Ajuste para não sobrepor o botão de voltar
+    marginTop: 40,
   },
   messagesList: {
     flex: 1,

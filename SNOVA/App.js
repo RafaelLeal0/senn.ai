@@ -1,3 +1,4 @@
+//Gustavo Martins e Rafael Leal
 import React, { useState, useEffect } from 'react';
 import { View, Image, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';

@@ -12,7 +12,7 @@ export default function Cadastro() {
 
   const handleCadastro = async () => {
     if (!email || !password) {
-      Alert.alert('Erro', 'Preencha todos os campos.');
+      alert('Erro, Preencha todos os campos.');
       return;
     }
 
@@ -23,11 +23,11 @@ export default function Cadastro() {
         criadoEm: serverTimestamp(),
       });
 
-      Alert.alert('Sucesso', 'Usuário cadastrado com sucesso!');
+      alert('Sucesso, Usuário cadastrado com sucesso!');
       navigation.replace('Login');
     } catch (error) {
       console.error('Erro ao cadastrar usuário:', error);
-      Alert.alert('Erro', 'Não foi possível cadastrar. Verifique sua conexão e permissões.');
+      alert('Erro', 'Não foi possível cadastrar. Verifique sua conexão e permissões.');
     }
   };
 

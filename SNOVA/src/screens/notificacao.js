@@ -1,10 +1,10 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
-export default function Mensagens() {
+export default function Notificacao() {
   return (
     <View style={styles.container}>
-      <Text style={{ color: '#fff' }}>Página de Mensagens</Text>
+      <Text style={{ color: '#fff' }}>Página de Notificações Leal</Text>
     </View>
   );
 }

@@ -9,7 +9,6 @@ const posts = [
     username: '@theweeknd',
     time: '6 min',
     text: 'hurryuptomorrow.movie/tickets',
-   
     likes: 481,
     comments: 38,
     shares: 69,
@@ -20,7 +19,6 @@ const posts = [
     username: '@luvadepedreiro',
     time: '20 h',
     text: 'Descanse em Paz 🙏🏻🖤',
-    
     likes: 0,
     comments: 0,
     shares: 0,
@@ -58,7 +56,6 @@ export default function FeedScreen() {
               <Text style={styles.bold}>{item.user}</Text> {item.username} · {item.time}
             </Text>
             <Text style={styles.postText}>{item.text}</Text>
-          
             <View style={styles.reactions}>
               <Text>💬 {item.comments}</Text>
               <Text>🔁 {item.shares}</Text>
@@ -136,6 +133,9 @@ const styles = StyleSheet.create({
     color: '#fff',
     marginBottom: 5,
   },
+  reactions: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
   postImage: {
     width: '100%',
     height: 250,

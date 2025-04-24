@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const posts = [
   {
@@ -46,11 +47,11 @@ export default function FeedScreen() {
   const [currentPostId, setCurrentPostId] = useState(null);
   const [newComment, setNewComment] = useState('');
 
-  const handlePost = () => {
+  const handlePost = async () => {
     if (newPostText.trim() === '') return;
 
     const newPost = {
-      id: (postList.length + 1).toString(),
+      id: Date.now().toString(), // ID único baseado no timestamp
       user: 'Você',
       username: '@voce',
       time: 'Agora',
@@ -61,8 +62,17 @@ export default function FeedScreen() {
       commentList: [],
     };
 
-    setPostList([newPost, ...postList]);
+    const updatedPosts = [newPost, ...postList];
+    setPostList(updatedPosts);
     setNewPostText('');
+
+    try {
+      const storedUserPosts = await AsyncStorage.getItem('userPosts');
+      const userPosts = storedUserPosts ? JSON.parse(storedUserPosts) : [];
+      await AsyncStorage.setItem('userPosts', JSON.stringify([newPost, ...userPosts]));
+    } catch (error) {
+      console.error('Erro ao salvar o post:', error);
+    }
   };
 
   const toggleReaction = (postId, reactionType) => {

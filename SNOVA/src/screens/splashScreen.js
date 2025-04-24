@@ -7,7 +7,7 @@ export default function SplashScreen() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      navigation.replace('Cadastro'); // Navega automaticamente para a tela de cadastro
+      navigation.replace('Cadastro'); // Certifique-se de que "Cadastro" está correto
     }, 2000); // Tempo de exibição da SplashScreen (2 segundos)
 
     return () => clearTimeout(timer); // Limpa o timer ao desmontar o componente

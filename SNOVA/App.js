@@ -9,7 +9,7 @@ import PaginaPrincipal from './src/screens/paginaPrincipal';
 import Notificacoes from './src/screens/notificacoes';
 import Mensagens from './src/screens/mensagens';
 import Perfil from './src/screens/perfil';
-import Pesquisa from './src/screens/pesquisa'; // Adicionei a importação da tela de pesquisa
+
 
 const Stack = createStackNavigator();
 
@@ -18,14 +18,14 @@ export default function App() {
     <SafeAreaView style={styles.container}>
       <NavigationContainer>
         <Stack.Navigator initialRouteName="SplashScreen">
-          <Stack.Screen name="SplashScreen" component={SplashScreen} />
-          <Stack.Screen name="Login" component={Login} />
-          <Stack.Screen name="Cadastro" component={Cadastro} />
-          <Stack.Screen name="PaginaPrincipal" component={PaginaPrincipal} />
-          <Stack.Screen name="Notificacoes" component={Notificacoes} />
-          <Stack.Screen name="Mensagens" component={Mensagens} />
-          <Stack.Screen name="Perfil" component={Perfil} />
-          <Stack.Screen name="Pesquisa" component={Pesquisa} /> {/* Adicionei a tela de pesquisa */}
+          <Stack.Screen name="SplashScreen" component={SplashScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+          <Stack.Screen name="Cadastro" component={Cadastro} options={{ headerShown: false }} />
+          <Stack.Screen name="PaginaPrincipal" component={PaginaPrincipal} options={{ headerShown: false }} />
+          <Stack.Screen name="Notificacoes" component={Notificacoes} options={{ headerShown: false }} />
+          <Stack.Screen name="Mensagens" component={Mensagens} options={{ headerShown: false }} />
+          <Stack.Screen name="Perfil" component={Perfil} options={{ headerShown: false }} />
+      
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaView>

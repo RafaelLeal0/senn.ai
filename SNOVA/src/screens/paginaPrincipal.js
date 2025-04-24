@@ -1,9 +1,6 @@
 import React from 'react';
-import { View, Text, TextInput, TouchableOpacity, FlatList, Image, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-
-// Verifique se o pacote react-native-vector-icons está instalado corretamente.
-// Execute `npm install react-native-vector-icons` se necessário.
 
 const posts = [
   {
@@ -45,11 +42,7 @@ export default function FeedScreen() {
       {/* Campo de post */}
       <View style={styles.postBox}>
         <Icon name="person-circle-outline" size={40} color="#fff" />
-        <TextInput
-          placeholder="Escreva seu post"
-          placeholderTextColor="#aaa"
-          style={styles.input}
-        />
+        <TextInput placeholder="Escreva seu post" placeholderTextColor="#aaa" style={styles.input} />
         <TouchableOpacity style={styles.postButton}>
           <Text style={{ color: '#000' }}>Postar</Text>
         </TouchableOpacity>

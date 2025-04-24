@@ -1,16 +1,22 @@
 import React, { useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
-export default function SplashScreen({ navigation }) {
+export default function SplashScreen() {
+  const navigation = useNavigation();
+
   useEffect(() => {
-    setTimeout(() => {
-      navigation.replace('Login');
-    }, 2000);
+    const timer = setTimeout(() => {
+      navigation.replace('Cadastro'); // Navega automaticamente para a tela de cadastro
+    }, 2000); // Tempo de exibição da SplashScreen (2 segundos)
+
+    return () => clearTimeout(timer); // Limpa o timer ao desmontar o componente
   }, [navigation]);
 
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Bem-vindo ao SNOVA!</Text>
+      <Text style={styles.text}>Bem-vindo ao App</Text>
+      <ActivityIndicator size="large" color="#000" />
     </View>
   );
 }
@@ -23,7 +29,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   text: {
-    fontSize: 24,
-    fontWeight: 'bold',
+    fontSize: 18,
+    marginBottom: 20,
   },
 });

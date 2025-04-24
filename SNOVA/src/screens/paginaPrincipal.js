@@ -1,5 +1,15 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet, SafeAreaView, Image } from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  FlatList,
+  StyleSheet,
+  SafeAreaView,
+  Image,
+  Modal
+} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 
@@ -10,10 +20,10 @@ const posts = [
     username: '@theweeknd',
     time: '6 min',
     text: 'hurryuptomorrow.movie/tickets',
-   
     likes: 481,
     comments: 38,
     shares: 69,
+    commentList: [],
   },
   {
     id: '2',
@@ -21,10 +31,10 @@ const posts = [
     username: '@luvadepedreiro',
     time: '20 h',
     text: 'Descanse em Paz 🙏🏻🖤',
-    
     likes: 0,
     comments: 0,
     shares: 0,
+    commentList: [],
   },
 ];
 
@@ -32,6 +42,9 @@ export default function FeedScreen() {
   const navigation = useNavigation();
   const [postList, setPostList] = useState(posts);
   const [newPostText, setNewPostText] = useState('');
+  const [isCommenting, setIsCommenting] = useState(false);
+  const [currentPostId, setCurrentPostId] = useState(null);
+  const [newComment, setNewComment] = useState('');
 
   const handlePost = () => {
     if (newPostText.trim() === '') return;
@@ -45,6 +58,7 @@ export default function FeedScreen() {
       likes: 0,
       comments: 0,
       shares: 0,
+      commentList: [],
     };
 
     setPostList([newPost, ...postList]);
@@ -67,15 +81,32 @@ export default function FeedScreen() {
     );
   };
 
+  const handleAddComment = () => {
+    if (newComment.trim() === '') return;
+
+    setPostList((prevPosts) =>
+      prevPosts.map((post) => {
+        if (post.id === currentPostId) {
+          return {
+            ...post,
+            comments: post.comments + 1,
+            commentList: [newComment],
+          };
+        }
+        return post;
+      })
+    );
+
+    setNewComment('');
+    setIsCommenting(false);
+  };
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
         {/* Topo */}
         <View style={styles.topBar}>
-          <Image 
-            source={require('../../src/assets/logo.jpg')} 
-            style={styles.logoImage} 
-          />
+          <Image source={require('../../src/assets/logo.jpg')} style={styles.logoImage} />
           <View style={styles.tabs}>
             <Text style={[styles.tabText, styles.activeTab]}>Para você</Text>
           </View>
@@ -106,30 +137,33 @@ export default function FeedScreen() {
                 <Text style={styles.bold}>{item.user}</Text> {item.username} · {item.time}
               </Text>
               <Text style={styles.postText}>{item.text}</Text>
-            
+
+              {item.commentList.length > 0 && (
+                <Text style={styles.commentText}>
+                  {item.commentList[item.commentList.length - 1]}
+                </Text>
+              )}
+
               <View style={styles.reactions}>
                 <TouchableOpacity
                   style={{ flexDirection: 'row', alignItems: 'center', gap: 5 }}
-                  onPress={() => toggleReaction(item.id, 'comments')}
+                  onPress={() => {
+                    setCurrentPostId(item.id);
+                    setIsCommenting(true);
+                  }}
                 >
-                  <Icon
-                    name="chatbubble-outline"
-                    size={20}
-                    color="#fff"
-                  />
+                  <Icon name="chatbubble-outline" size={20} color="#fff" />
                   <Text style={{ color: '#fff' }}>{item.comments}</Text>
                 </TouchableOpacity>
+
                 <TouchableOpacity
                   style={{ flexDirection: 'row', alignItems: 'center', gap: 5 }}
                   onPress={() => toggleReaction(item.id, 'shares')}
                 >
-                  <Icon
-                    name="repeat-outline"
-                    size={20}
-                    color="#fff"
-                  />
+                  <Icon name="repeat-outline" size={20} color="#fff" />
                   <Text style={{ color: '#fff' }}>{item.shares}</Text>
                 </TouchableOpacity>
+
                 <TouchableOpacity
                   style={{ flexDirection: 'row', alignItems: 'center', gap: 5 }}
                   onPress={() => toggleReaction(item.id, 'likes')}
@@ -146,6 +180,28 @@ export default function FeedScreen() {
           )}
         />
       </View>
+
+      {/* Modal para adicionar comentário */}
+      <Modal visible={isCommenting} animationType="slide" transparent={true}>
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Adicionar Comentário</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Escreva seu comentário"
+              placeholderTextColor="#aaa"
+              value={newComment}
+              onChangeText={setNewComment}
+            />
+            <TouchableOpacity style={styles.saveButton} onPress={handleAddComment}>
+              <Text style={styles.saveButtonText}>Comentar</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.cancelButton} onPress={() => setIsCommenting(false)}>
+              <Text style={styles.cancelButtonText}>Cancelar</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
 
       {/* Barra de navegação */}
       <View style={styles.bottomBar}>
@@ -175,11 +231,6 @@ const styles = StyleSheet.create({
   topBar: {
     alignItems: 'center',
     marginBottom: 10,
-  },
-  logo: {
-    fontSize: 24,
-    color: '#fff',
-    fontWeight: 'bold',
   },
   logoImage: {
     width: 50,
@@ -212,6 +263,9 @@ const styles = StyleSheet.create({
     borderColor: '#555',
     padding: 5,
     marginHorizontal: 10,
+    backgroundColor: '#333',
+    borderRadius: 8,
+    marginBottom: 15,
   },
   postButton: {
     backgroundColor: '#bbb',
@@ -236,12 +290,13 @@ const styles = StyleSheet.create({
     color: '#fff',
     marginBottom: 5,
   },
-  postImage: {
-    width: '100%',
-    height: 250,
-    resizeMode: 'cover',
-    borderRadius: 10,
-    marginVertical: 5,
+  commentText: {
+    color: '#fff',
+    backgroundColor: '#222',
+    padding: 8,
+    borderRadius: 5,
+    marginTop: 5,
+    marginLeft: 10,
   },
   reactions: {
     flexDirection: 'row',
@@ -257,5 +312,45 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderTopWidth: 0.5,
     borderColor: '#333',
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+  },
+  modalContent: {
+    width: '80%',
+    backgroundColor: '#111',
+    padding: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  modalTitle: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
+  saveButton: {
+    backgroundColor: '#28a745',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    marginBottom: 10,
+  },
+  saveButtonText: {
+    color: '#fff',
+    fontSize: 16,
+  },
+  cancelButton: {
+    backgroundColor: '#dc3545',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+  },
+  cancelButtonText: {
+    color: '#fff',
+    fontSize: 16,
   },
 });

@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, FlatList, TouchableOpacity, SafeAreaView } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, SafeAreaView } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 
 const mensagensData = [
-  { id: '1', nome: 'João', mensagem: 'Oi, tudo bem?' },
-  { id: '2', nome: 'Maria', mensagem: 'Como você está?' },
+  { id: '1', nome: 'João', mensagem: 'Eae, de boa?' },
+  { id: '2', nome: 'Maria', mensagem: 'Oii, como você está?' },
   { id: '3', nome: 'Pedro', mensagem: 'Vamos marcar algo?' },
 ];
 
@@ -15,23 +15,24 @@ export default function MensagensScreen() {
 
   const enviarMensagem = () => {
     if (novaMensagem.trim()) {
-      // Aqui você pode implementar a lógica para enviar a mensagem
       alert('Mensagem enviada: ' + novaMensagem);
       setNovaMensagem('');
     }
   };
 
   const renderItem = ({ item }) => (
-    <View style={styles.messageContainer}>
+    <TouchableOpacity
+      onPress={() => navigation.navigate('Chat', { userName: item.nome })}
+      style={styles.messageContainer}
+    >
       <Text style={styles.nome}>{item.nome}</Text>
       <Text style={styles.mensagem}>{item.mensagem}</Text>
-    </View>
+    </TouchableOpacity>
   );
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
-        {/* Topo */}
         <View style={styles.topBar}>
           <Text style={styles.logo}>SN</Text>
           <View style={styles.tabs}>
@@ -39,30 +40,14 @@ export default function MensagensScreen() {
           </View>
         </View>
 
-        {/* Lista de mensagens */}
         <FlatList
           data={mensagensData}
           renderItem={renderItem}
           keyExtractor={(item) => item.id}
           style={styles.messagesList}
         />
-
-        {/* Campo para digitar nova mensagem */}
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.input}
-            placeholder="Escreva uma mensagem..."
-            placeholderTextColor="#888"
-            value={novaMensagem}
-            onChangeText={setNovaMensagem}
-          />
-          <TouchableOpacity onPress={enviarMensagem} style={styles.sendButton}>
-            <Text style={styles.sendButtonText}>Enviar</Text>
-          </TouchableOpacity>
-        </View>
       </View>
 
-      {/* Barra de navegação */}
       <View style={styles.bottomBar}>
         <TouchableOpacity onPress={() => navigation.navigate('PaginaPrincipal')}>
           <Icon name="home-outline" size={30} color="#fff" />

@@ -278,7 +278,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   postButton: {
-    backgroundColor: '#bbb',
+    backgroundColor: '#bbb', // Consistência com o botão de postar na tela de perfil
     paddingHorizontal: 10,
     paddingVertical: 6,
     borderRadius: 10,
@@ -343,21 +343,21 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   saveButton: {
-    backgroundColor: '#28a745',
+    backgroundColor: '#bbb', // Consistência com o botão de salvar na tela de perfil
     paddingVertical: 10,
     paddingHorizontal: 20,
-    borderRadius: 8,
+    borderRadius: 10,
     marginBottom: 10,
   },
   saveButtonText: {
-    color: '#fff',
+    color: '#000', // Texto preto para contraste
     fontSize: 16,
   },
   cancelButton: {
-    backgroundColor: '#dc3545',
+    backgroundColor: '#dc3545', // Consistência com o botão de cancelar na tela de perfil
     paddingVertical: 10,
     paddingHorizontal: 20,
-    borderRadius: 8,
+    borderRadius: 10,
   },
   cancelButtonText: {
     color: '#fff',

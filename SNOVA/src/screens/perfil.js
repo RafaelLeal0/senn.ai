@@ -23,12 +23,16 @@ export default function Perfil() {
   const [menuPostId, setMenuPostId] = useState(null);
   const [isCreatingPost, setIsCreatingPost] = useState(false);
   const [newPostText, setNewPostText] = useState('');
+  const [likedPosts, setLikedPosts] = useState([]);
+  const [isCommenting, setIsCommenting] = useState(false);
+  const [currentCommentPostId, setCurrentCommentPostId] = useState(null);
+  const [newCommentText, setNewCommentText] = useState('');
 
   useEffect(() => {
     const requestPermissionAndFetchUser = async () => {
       const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
       if (status !== 'granted') {
-        Alert.alert('Permissão necessária', 'Você precisa permitir acesso à galeria para mudar a imagem de perfil.');
+        alert('Permissão necessária, você precisa permitir acesso à galeria para mudar a imagem de perfil.');
       }
 
       try {
@@ -40,7 +44,7 @@ export default function Perfil() {
         setUsername(storedUsername || 'gustamartins');
         setBio(storedBio || 'Tenho 17 anos, estou no terceiro ano do Ensino Médio e faço Desenvolvimento de Sistemas no Senai de Taubaté.');
       } catch (error) {
-        Alert.alert('Erro', 'Não foi possível carregar os dados do usuário.');
+        alert('Erro, não foi possível carregar os dados do usuário.');
       }
     };
 
@@ -79,9 +83,9 @@ export default function Perfil() {
 
       try {
         await AsyncStorage.setItem('profileImage', imageUri);
-        Alert.alert('Sucesso', 'Imagem de perfil atualizada com sucesso!');
+        alert('Sucesso, imagem de perfil atualizada com sucesso!');
       } catch (error) {
-        Alert.alert('Erro', 'Não foi possível salvar a imagem de perfil.');
+        alert('Erro, Não foi possível salvar a imagem de perfil.');
       }
     }
   };
@@ -94,9 +98,9 @@ export default function Perfil() {
     try {
       await AsyncStorage.setItem('username', newUsername);
       await AsyncStorage.setItem('bio', newBio);
-      Alert.alert('Sucesso', 'Perfil atualizado com sucesso!');
+      alert('Sucesso, Perfil atualizado com sucesso!');
     } catch (error) {
-      Alert.alert('Erro', 'Não foi possível salvar as alterações.');
+      alert('Erro, Não foi possível salvar as alterações.');
     }
   };
 
@@ -151,6 +155,56 @@ export default function Perfil() {
     }
   };
 
+  const handleLikePost = async (postId) => {
+    const updatedPosts = userPosts.map((post) => {
+      if (post.id === postId) {
+        const isLiked = likedPosts.includes(postId);
+        return {
+          ...post,
+          likes: isLiked ? (post.likes || 0) - 1 : (post.likes || 0) + 1,
+        };
+      }
+      return post;
+    });
+  
+    setUserPosts(updatedPosts);
+  
+    if (likedPosts.includes(postId)) {
+      setLikedPosts(likedPosts.filter((id) => id !== postId));
+    } else {
+      setLikedPosts([...likedPosts, postId]);
+    }
+  
+    try {
+      await AsyncStorage.setItem('userPosts', JSON.stringify(updatedPosts));
+    } catch (error) {
+      console.error('Erro ao atualizar curtidas:', error);
+    }
+  };
+  
+
+  const handleCommentPost = (postId) => {
+    setCurrentCommentPostId(postId);
+    setIsCommenting(true);
+  };
+
+  const handleSaveComment = async () => {
+    const updatedPosts = userPosts.map((post) =>
+      post.id === currentCommentPostId
+        ? { ...post, comments: (post.comments || 0) + 1 }
+        : post
+    );
+    setUserPosts(updatedPosts);
+    setIsCommenting(false);
+    setNewCommentText('');
+
+    try {
+      await AsyncStorage.setItem('userPosts', JSON.stringify(updatedPosts));
+    } catch (error) {
+      console.error('Erro ao salvar o comentário:', error);
+    }
+  };
+
   const openMenu = (postId) => {
     setMenuPostId(postId);
     setMenuVisible(true);
@@ -196,14 +250,24 @@ export default function Perfil() {
               <Text style={styles.postDate}>{post.time}</Text>
               <Text style={styles.postContent}>{post.text}</Text>
               <View style={styles.postReactions}>
-                <View style={styles.reaction}>
+                <TouchableOpacity
+                  style={styles.reaction}
+                  onPress={() => handleCommentPost(post.id)}
+                >
                   <Icon name="chatbubble-outline" size={20} color="#fff" />
                   <Text style={styles.reactionText}>{post.comments || 0}</Text>
-                </View>
-                <View style={styles.reaction}>
-                  <Icon name="heart-outline" size={20} color="#fff" />
-                  <Text style={styles.reactionText}>{post.likes || 0}</Text>
-                </View>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={{ flexDirection: 'row', alignItems: 'center', gap: 5 }}
+                  onPress={() => handleLikePost(post.id)}
+                >
+                  <Icon
+                    name="heart-outline"
+                    size={20}
+                    color={likedPosts.includes(post.id) ? 'red' : '#fff'}
+                  />
+                  <Text style={{ color: '#fff' }}>{post.likes || 0}</Text>
+                </TouchableOpacity>
               </View>
               <TouchableOpacity
                 style={styles.menuButton}
@@ -326,6 +390,31 @@ export default function Perfil() {
         </View>
       </Modal>
 
+      {/* Modal para adicionar comentário */}
+      <Modal visible={isCommenting} animationType="slide" transparent={true}>
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Adicionar Comentário</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Digite seu comentário"
+              value={newCommentText}
+              onChangeText={setNewCommentText}
+              multiline
+            />
+            <TouchableOpacity style={styles.saveButton} onPress={handleSaveComment}>
+              <Text style={styles.saveButtonText}>Comentar</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.cancelButton}
+              onPress={() => setIsCommenting(false)}
+            >
+              <Text style={styles.cancelButtonText}>Cancelar</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+
       {/* Ícone flutuante para criar novo post */}
       <TouchableOpacity
         style={styles.floatingButton}
@@ -370,12 +459,15 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   editButton: {
-    backgroundColor: '#333',
+    backgroundColor: '#bbb', // Consistência com o botão de postar na tela de paginaPrincipal
     paddingVertical: 8,
     paddingHorizontal: 16,
-    borderRadius: 8,
+    borderRadius: 10,
   },
-  editButtonText: { color: '#fff', fontSize: 14 },
+  editButtonText: {
+    color: '#000', // Texto preto para contraste
+    fontSize: 14,
+  },
   userInfo: { alignItems: 'center', padding: 16 },
   username: { color: '#fff', fontSize: 22, fontWeight: 'bold' },
   bio: {
@@ -476,20 +568,26 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   saveButton: {
-    backgroundColor: '#28a745',
+    backgroundColor: '#bbb', // Consistência com o botão de salvar na tela de paginaPrincipal
     paddingVertical: 10,
     paddingHorizontal: 20,
-    borderRadius: 8,
+    borderRadius: 10,
     marginBottom: 10,
   },
-  saveButtonText: { color: '#fff', fontSize: 16 },
+  saveButtonText: {
+    color: '#000', // Texto preto para contraste
+    fontSize: 16,
+  },
   cancelButton: {
-    backgroundColor: '#dc3545',
+    backgroundColor: '#dc3545', // Consistência com o botão de cancelar na tela de paginaPrincipal
     paddingVertical: 10,
     paddingHorizontal: 20,
-    borderRadius: 8,
+    borderRadius: 10,
   },
-  cancelButtonText: { color: '#fff', fontSize: 16 },
+  cancelButtonText: {
+    color: '#fff',
+    fontSize: 16,
+  },
   menuButton: {
     position: 'absolute',
     top: 10,
@@ -519,15 +617,15 @@ const styles = StyleSheet.create({
   },
   floatingButton: {
     position: 'absolute',
-    bottom: 80, // Mantém o botão fixo na tela
+    bottom: 80,
     right: 20,
-    backgroundColor: '#28a745',
+    backgroundColor: '#bbb', // Consistência com o botão de postar na tela de paginaPrincipal
     width: 60,
     height: 60,
     borderRadius: 30,
     justifyContent: 'center',
     alignItems: 'center',
     elevation: 5,
-    zIndex: 10, // Garante que o botão fique acima de outros elementos
+    zIndex: 10,
   },
 });

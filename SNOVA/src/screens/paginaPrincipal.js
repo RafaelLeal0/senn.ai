@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet, SafeAreaView } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet, SafeAreaView, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 
@@ -72,10 +72,12 @@ export default function FeedScreen() {
       <View style={styles.container}>
         {/* Topo */}
         <View style={styles.topBar}>
-          <Text style={styles.logo}>SN</Text>
+          <Image 
+            source={require('../../src/assets/logo.jpg')} 
+            style={styles.logoImage} 
+          />
           <View style={styles.tabs}>
             <Text style={[styles.tabText, styles.activeTab]}>Para você</Text>
-            
           </View>
         </View>
 
@@ -178,6 +180,11 @@ const styles = StyleSheet.create({
     fontSize: 24,
     color: '#fff',
     fontWeight: 'bold',
+  },
+  logoImage: {
+    width: 50,
+    height: 50,
+    resizeMode: 'contain',
   },
   tabs: {
     flexDirection: 'row',

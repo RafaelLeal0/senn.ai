@@ -1,26 +1,73 @@
 import React from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import Perfil from './perfil';
+import Mensagens from './mensagens';
+import Notificacao from './notificacao';
 
-export default function PaginaPrincipal({ navigation }) {
+// Páginas fictícias para navegação
+function HomeScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Página Principal</Text>
-      <Button title="Notificações" onPress={() => navigation.navigate('Notificacoes')} />
-      <Button title="Mensagens" onPress={() => navigation.navigate('Mensagens')} />
-      <Button title="Perfil" onPress={() => navigation.navigate('Perfil')} />
+      <Text style={{ color: '#fff' }}>Página Inicial</Text>
     </View>
+  );
+}
+
+// Configuração do BottomTabNavigator
+const Tab = createBottomTabNavigator();
+
+export default function TabNavigator() {
+  return (
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName;
+
+          if (route.name === 'Home') {
+            iconName = focused ? 'home' : 'home-outline';
+          } else if (route.name === 'Messages') {
+            iconName = focused ? 'chatbubble' : 'chatbubble-outline';
+          } else if (route.name === 'Notifications') {
+            iconName = focused ? 'notifications' : 'notifications-outline';
+          } else if (route.name === 'Perfil') {
+            iconName = focused ? 'person' : 'person-outline';
+          }
+
+          // Retorna o ícone correspondente
+          return <Ionicons name={iconName} size={size} color={color} />;
+        },
+        tabBarActiveTintColor: '#fff',
+        tabBarInactiveTintColor: '#aaa',
+        tabBarStyle: { backgroundColor: '#000' },
+      })}
+    >
+      <Tab.Screen name="Home" component={HomeScreen} />
+      <Tab.Screen name="Messages" component={Mensagens} />
+      <Tab.Screen name="Notifications" component={Notificacao} />
+      <Tab.Screen name="Perfil" component={Perfil} />
+    </Tab.Navigator>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#fff',
-  },
-  text: {
-    fontSize: 18,
-    marginBottom: 20,
+    backgroundColor: '#000',
+    padding: 16,
   },
 });
+
+
+
+
+
+
+
+
+
+
+
+
+

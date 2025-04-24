@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, SafeAreaView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { Ionicons } from '@expo/vector-icons'; // Ícone de seta
 
 export default function Login() {
   const navigation = useNavigation();
@@ -16,7 +15,11 @@ export default function Login() {
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
-       
+        <Image 
+          source={require('../../src/assets/logo.jpg')} 
+          style={styles.logo}
+        />
+
         <Text style={styles.subtitle}>Faça login para continuar</Text>
 
         <Text style={styles.label}>Email</Text>
@@ -43,11 +46,15 @@ export default function Login() {
         <TouchableOpacity>
           <Text style={styles.forgotText}>Esqueceu a senha?</Text>
         </TouchableOpacity>
-      </View>
 
-      <TouchableOpacity style={styles.button} onPress={handleLogin}>
-        <Text style={styles.buttonText}>Entrar</Text>
-      </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={handleLogin}>
+          <Text style={styles.buttonText}>Entrar</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={() => navigation.navigate('Cadastro')}>
+          <Text style={styles.registerText}>Não tem uma conta? Cadastre-se</Text>
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 }
@@ -57,21 +64,20 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
-  backButton: {
-    padding: 15,
-  },
   container: {
     flex: 1,
     paddingHorizontal: 30,
     alignItems: 'center',
+    justifyContent: 'center',
   },
   logo: {
-    width: 100,  // Ajuste o tamanho da logo conforme necessário
-    height: 100,
-    marginVertical: 20,  // Distância entre a logo e os outros elementos
+    width: 120,
+    height: 120,
+    marginBottom: 20,
+    borderRadius: 30,
   },
   subtitle: {
-    fontSize: 14,
+    fontSize: 16,
     color: '#555',
     marginBottom: 30,
   },
@@ -99,9 +105,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
+    marginTop: 30,
+    borderRadius: 5,
   },
   buttonText: {
     color: '#fff',
     fontSize: 16,
+  },
+  registerText: {
+    marginTop: 20,
+    color: '#000',
+    textDecorationLine: 'underline',
   },
 });

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, SafeAreaView, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { Ionicons } from '@expo/vector-icons'; // Ícone de seta
+import { Ionicons } from '@expo/vector-icons';
 
 export default function Cadastro() {
   const navigation = useNavigation();
@@ -20,6 +20,11 @@ export default function Cadastro() {
       </TouchableOpacity>
 
       <View style={styles.container}>
+        <Image 
+          source={require('../../src/assets/logo.jpg')} 
+          style={styles.logoImage} 
+        />
+
         <Text style={styles.subtitle}>Faça seu cadastro</Text>
 
         <Text style={styles.label}>Email</Text>
@@ -42,11 +47,11 @@ export default function Cadastro() {
           secureTextEntry
           placeholderTextColor="#aaa"
         />
-      </View>
 
-      <TouchableOpacity style={styles.button} onPress={handleCadastro}>
-        <Text style={styles.buttonText}>Cadastrar</Text>
-      </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={handleCadastro}>
+          <Text style={styles.buttonText}>Cadastrar</Text>
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 }
@@ -63,9 +68,16 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 30,
     alignItems: 'center',
+    justifyContent: 'center',
+  },
+  logoImage: {
+    width: 120,
+    height: 120,
+    marginBottom: 20,
+    borderRadius: 30,
   },
   subtitle: {
-    fontSize: 14,
+    fontSize: 16,
     color: '#555',
     marginBottom: 30,
   },
@@ -88,6 +100,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
+    marginTop: 30,
+    borderRadius: 5,
   },
   buttonText: {
     color: '#fff',
